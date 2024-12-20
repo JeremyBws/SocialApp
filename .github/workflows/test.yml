@@ -14,16 +14,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    # Met à jour la version de Node.js utilisée
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 16
+        node-version: '18'  # Utilise Node.js 18 ou une version plus récente
 
     - name: Install dependencies
       run: npm install
 
     - name: Run ESLint
-      run: npx eslint .
+      run: npx eslint . --ext .js,.jsx,.ts,.tsx  # Assure-toi de la bonne utilisation du flag
 
     - name: Run tests
       run: npm test
