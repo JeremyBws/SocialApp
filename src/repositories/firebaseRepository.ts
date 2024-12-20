@@ -1,13 +1,5 @@
-import { injectable, inject } from 'inversify';
 import 'firebase/auth';
-import { SYMBOLS } from '../types/symbols';
-import { 
-  ILogger, 
-  IAuthService, 
-  IFirebaseRepository, 
-  UserPreferences, 
-  UserProgress 
-} from '../types/interfaces';
+
 import {
   doc,
   writeBatch,
@@ -17,18 +9,25 @@ import {
   updateDoc
 } from 'firebase/firestore';
 import { Restaurant } from '../types/restaurant';
+import { ILogger, IAuthService, IFirebaseRepository } from '../types/interfaces';
 
-@injectable()
+
 export class FirebaseRepository implements IFirebaseRepository {
   private readonly usersCollection = 'users';
   private readonly restaurantsCollection = 'restaurants';
+  private logger: ILogger;
+  private db: Firestore;
+  private authService: IAuthService;
 
   constructor(
-    @inject(SYMBOLS.Logger) private logger: ILogger,
-    @inject(SYMBOLS.Firestore) private db: Firestore,
-    @inject(SYMBOLS.AuthService) private authService: IAuthService
-  ) {}
-
+    logger: ILogger,
+    db: Firestore,
+    authService: IAuthService
+  ) {
+    this.logger = logger;
+    this.db = db;
+    this.authService = authService;
+  }
   async getRestaurant(id: string): Promise<Restaurant | null> {
     try {
       const docRef = doc(this.db, this.restaurantsCollection, id);

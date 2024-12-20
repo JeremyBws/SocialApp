@@ -1,18 +1,13 @@
-import { injectable } from 'inversify';
 import { IConfig } from '../types/interfaces';
 import Constants from 'expo-constants';
 
-@injectable()
 export class Config implements IConfig {
   public readonly googlePlacesApiKey: string;
   public readonly baseUrl: string;
   public readonly environment: string;
 
   constructor() {
-    // URL de base de l'API Google Places
     this.baseUrl = Constants.expoConfig?.extra?.API_BASE_URL;
-    
-    // Clé API depuis les variables d'environnement
     this.googlePlacesApiKey = Constants.expoConfig?.extra?.GOOGLE_PLACES_API_KEY;
     
     if (!this.googlePlacesApiKey) {

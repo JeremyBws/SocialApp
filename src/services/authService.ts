@@ -1,15 +1,14 @@
-import { injectable, inject } from 'inversify';
-import { SYMBOLS } from '../types/symbols';
 import { ILogger, IAuthService, IFirebaseRepository } from '../types/interfaces';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-@injectable()
 export class AuthService implements IAuthService {
-  constructor(
-    @inject(SYMBOLS.Logger) private logger: ILogger,
-    @inject(SYMBOLS.FirebaseRepository) private firebaseRepo: IFirebaseRepository
-  ) {}
+  private logger: ILogger;
+  private firebaseRepo: IFirebaseRepository;
 
+  constructor(logger: ILogger, firebaseRepo: IFirebaseRepository) {
+    this.logger = logger;
+    this.firebaseRepo = firebaseRepo;
+  }
   getCurrentUserId(): string | null {
     const auth = getAuth();
     return auth.currentUser?.uid ?? null;

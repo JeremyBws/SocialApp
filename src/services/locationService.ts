@@ -1,14 +1,13 @@
-import { injectable, inject } from 'inversify';
-import { SYMBOLS } from '../types/symbols';
 import { ILogger, ILocationService } from '../types/interfaces';
 import * as Location from 'expo-location';
 import { GeoPoint } from 'firebase/firestore';
 
-@injectable()
 export class LocationService implements ILocationService {
-  constructor(
-    @inject(SYMBOLS.Logger) private logger: ILogger,
-  ) {}
+  private logger: ILogger;
+
+  constructor(logger: ILogger) {
+    this.logger = logger;
+  }
 
   async getCurrentLocation(): Promise<Location.LocationObject> {
     try {

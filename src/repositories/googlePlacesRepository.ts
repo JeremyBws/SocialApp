@@ -1,42 +1,25 @@
-import { injectable, inject } from 'inversify';
 import axios from 'axios';
-import { SYMBOLS } from '../types/symbols';
 import { ILogger, IConfig, IGooglePlacesRepository } from '../types/interfaces';
 import { GooglePlacesAPIResponse, GooglePlaceResult } from '../types/restaurant';
 
-@injectable()
 export class GooglePlacesRepository implements IGooglePlacesRepository {
   private baseUrl: string;
   private readonly logger: ILogger;
   private readonly config: IConfig;
 
-  constructor(
-    @inject(SYMBOLS.Logger) logger: ILogger,
-    @inject(SYMBOLS.Config) config: IConfig
-  ) {
-    console.log('GooglePlacesRepository constructor - Dependencies:', {
-      hasLogger: !!logger,
-      hasConfig: !!config
-    });
-
+  constructor(logger: ILogger, config: IConfig) {
     if (!logger) {
-      console.error('Logger is missing in GooglePlacesRepository constructor');
       throw new Error('Logger dependency is missing in GooglePlacesRepository');
     }
 
     this.logger = logger;
     this.config = config;
 
-    this.logger.info('GooglePlacesRepository initializing...');
-
     if (!this.config) {
-      this.logger.error('Config is missing in GooglePlacesRepository');
       throw new Error('Config dependency is missing in GooglePlacesRepository');
     }
 
     this.baseUrl = this.config.baseUrl;
-    
-    this.logger.info('GooglePlacesRepository initialized successfully');
   }
 
   private getCommonParams(): Record<string, string> {

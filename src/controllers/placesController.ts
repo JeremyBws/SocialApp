@@ -1,14 +1,17 @@
-import { injectable, inject } from 'inversify';
-import { SYMBOLS } from '../types/symbols';
 import { ILogger, IPlacesService } from '../types/interfaces';
 import { Request, Response } from 'express';
 
-@injectable()
 export class PlacesController {
+  private placesService: IPlacesService;
+  private logger: ILogger;
+
   constructor(
-    @inject(SYMBOLS.PlacesService) private placesService: IPlacesService,
-    @inject(SYMBOLS.Logger) private logger: ILogger
-  ) {}
+    placesService: IPlacesService,
+    logger: ILogger
+  ) {
+    this.placesService = placesService;
+    this.logger = logger;
+  }
 
   async searchNearby(req: Request, res: Response) {
     this.logger.info('Received search nearby request', req.query);

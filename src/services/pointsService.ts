@@ -1,6 +1,4 @@
-import { injectable, inject } from 'inversify';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SYMBOLS } from '../types/symbols';
 import { ILogger, IFirebaseRepository, IPointsService } from '../types/interfaces';
 
 export enum ActionType {
@@ -20,14 +18,14 @@ const POINTS_CONFIG = {
   [ActionType.WISHLIST_ADDED]: 5,
   [ActionType.PHOTO_UPLOADED]: 20
 };
-
-@injectable()
 export class PointsService implements IPointsService {
-  constructor(
-    @inject(SYMBOLS.Logger) private logger: ILogger,
-    @inject(SYMBOLS.FirebaseRepository) private firebaseRepo: IFirebaseRepository
-  ) {}
+  private logger: ILogger;
+  private firebaseRepo: IFirebaseRepository;
 
+  constructor(logger: ILogger, firebaseRepo: IFirebaseRepository) {
+    this.logger = logger;
+    this.firebaseRepo = firebaseRepo;
+  }
   async addPoints(userId: string, points: number): Promise<void> {
     try {
       const currentPoints = await this.getCurrentPoints(userId);

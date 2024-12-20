@@ -1,15 +1,14 @@
-import { injectable, inject } from 'inversify';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SYMBOLS } from '../types/symbols';
 import { ILogger, IFirebaseRepository, IFavoritesService } from '../types/interfaces';
 
-@injectable()
 export class FavoritesService implements IFavoritesService {
-  constructor(
-    @inject(SYMBOLS.Logger) private logger: ILogger,
-    @inject(SYMBOLS.FirebaseRepository) private firebaseRepo: IFirebaseRepository
-  ) {}
+  private logger: ILogger;
+  private firebaseRepo: IFirebaseRepository;
 
+  constructor(logger: ILogger, firebaseRepo: IFirebaseRepository) {
+    this.logger = logger;
+    this.firebaseRepo = firebaseRepo;
+  }
   async addToFavorites(userId: string, restaurantId: string): Promise<void> {
     try {
       const favorites = await this.getFavorites(userId);

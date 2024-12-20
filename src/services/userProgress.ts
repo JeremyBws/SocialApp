@@ -1,14 +1,19 @@
-import { injectable, inject } from 'inversify';
-import { SYMBOLS } from '../types/symbols';
 import { ILogger, IFirebaseRepository, IPointsService } from '../types/interfaces';
 
-@injectable()
 export class UserProgressService {  
+  private logger: ILogger;
+  private pointsService: IPointsService;
+  private firebaseRepo: IFirebaseRepository;
+
   constructor(
-    @inject(SYMBOLS.Logger) private logger: ILogger,
-    @inject(SYMBOLS.PointsService) private pointsService: IPointsService,
-    @inject(SYMBOLS.FirebaseRepository) private firebaseRepo: IFirebaseRepository
-  ) {}
+    logger: ILogger,
+    pointsService: IPointsService,
+    firebaseRepo: IFirebaseRepository
+  ) {
+    this.logger = logger;
+    this.pointsService = pointsService;
+    this.firebaseRepo = firebaseRepo;
+  }
  async getCurrentLevel(userId: string): Promise<number> {
    try {
      const points = await this.pointsService.getCurrentPoints(userId);

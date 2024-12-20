@@ -1,13 +1,11 @@
-import { injectable, inject } from 'inversify';
-import { SYMBOLS } from '../types/symbols';
 import { ILogger, ISettingsService } from '../types/interfaces';
 
-@injectable()
 export class SettingsService implements ISettingsService {
-  constructor(
-    @inject(SYMBOLS.Logger) private logger: ILogger
-  ) {}
+  private logger: ILogger;
 
+  constructor(logger: ILogger) {
+    this.logger = logger;
+  }
   async updateSettings(settings: any): Promise<void> {
     try {
       this.logger.info(`Updating settings: ${JSON.stringify(settings)}`);
