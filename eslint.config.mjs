@@ -5,14 +5,13 @@ import pluginReact from "eslint-plugin-react";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  {files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"]},
-  {languageOptions: { globals: {...globals.browser, ...globals.node} }},
+  {
+    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"], // Spécification des extensions à analyser
+  },
+  {
+    languageOptions: { globals: { ...globals.browser, ...globals.node } },
+  },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
-  {
-    rules: {
-      "constructor-super": "off", // Désactiver cette règle spécifique
-    }
-  }
 ];

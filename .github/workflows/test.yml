@@ -25,7 +25,7 @@ jobs:
       run: npm install
 
     - name: Run ESLint
-      run: npx eslint . --ext .js,.jsx,.ts,.tsx  # Assure-toi de la bonne utilisation du flag
+      run: npx eslint .
 
     - name: Run tests
       run: npm test
