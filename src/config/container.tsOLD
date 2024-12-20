@@ -1,0 +1,119 @@
+import { Container } from 'inversify';
+import { SYMBOLS } from '../types/symbols';
+import { 
+  ILogger, 
+  IConfig,
+  IFirebaseRepository,
+  IGooglePlacesRepository,
+  IPlacesService,
+  IAuthService,
+  ILocationService,
+  IFavoritesService,
+  IPointsService,
+  ISettingsService 
+} from '../types/interfaces';
+
+// Import des implémentations concrètes
+import { Logger } from '../utils/logger';
+import { Config } from '../config/config';
+import { FirebaseRepository } from '../repositories/firebaseRepository';
+import { GooglePlacesRepository } from '../repositories/googlePlacesRepository';
+import { PlacesService } from '../services/placesService';
+import { AuthService } from '../services/authService';
+import { LocationService } from '../services/locationService';
+import { FavoritesService } from '../services/favoritesService';
+import { PointsService } from '../services/pointsService';
+import { SettingsService } from '../services/settingsService';
+import { Firestore } from 'firebase/firestore';
+import { db } from '../config/firebase';
+
+console.log('Starting container configuration');
+
+const container = new Container({ defaultScope: "Singleton" });
+
+// Test de création directe du Logger
+console.log('Testing Logger class...');
+const testLogger = new Logger();
+console.log('Direct Logger instance test:', {
+  exists: !!testLogger,
+  hasInfo: typeof testLogger.info === 'function',
+  hasError: typeof testLogger.error === 'function'
+});
+
+// Binding Logger with detailed verification
+console.log('Binding and testing Logger...');
+container.bind<ILogger>(SYMBOLS.Logger).to(Logger).inSingletonScope();
+
+try {
+  const loggerTest = container.get<ILogger>(SYMBOLS.Logger);
+  console.log('Logger binding test:', {
+    instance: !!loggerTest,
+    type: typeof loggerTest,
+    methods: Object.getOwnPropertyNames(loggerTest),
+    hasInfo: typeof loggerTest.info === 'function'
+  });
+} catch (e) {
+  console.error('Logger binding failed:', e);
+}
+
+// Binding and testing other services
+console.log('Binding other services...');
+container.bind<IConfig>(SYMBOLS.Config).to(Config).inSingletonScope();
+container.bind<Firestore>(SYMBOLS.Firestore).toConstantValue(db);
+
+// Repositories with verification
+console.log('Binding and testing repositories...');
+container.bind<IFirebaseRepository>(SYMBOLS.FirebaseRepository).to(FirebaseRepository).inSingletonScope();
+container.bind<IGooglePlacesRepository>(SYMBOLS.GooglePlacesRepository).to(GooglePlacesRepository).inSingletonScope();
+
+// Test repository bindings
+try {
+  const firebaseRepo = container.get<IFirebaseRepository>(SYMBOLS.FirebaseRepository);
+  const googleRepo = container.get<IGooglePlacesRepository>(SYMBOLS.GooglePlacesRepository);
+  console.log('Repository bindings test:', {
+    firebaseRepo: !!firebaseRepo,
+    googleRepo: !!googleRepo
+  });
+} catch (e) {
+  console.error('Repository binding failed:', e);
+}
+
+// Services with verification
+console.log('Binding and testing services...');
+container.bind<IPlacesService>(SYMBOLS.PlacesService).to(PlacesService).inSingletonScope();
+container.bind<IAuthService>(SYMBOLS.AuthService).to(AuthService).inSingletonScope();
+container.bind<ILocationService>(SYMBOLS.LocationService).to(LocationService).inSingletonScope();
+container.bind<IFavoritesService>(SYMBOLS.FavoritesService).to(FavoritesService).inSingletonScope();
+container.bind<IPointsService>(SYMBOLS.PointsService).to(PointsService).inSingletonScope();
+container.bind<ISettingsService>(SYMBOLS.SettingsService).to(SettingsService).inSingletonScope();
+
+// Verify all bindings comprehensively
+console.log('Performing final binding verification...');
+Object.entries(SYMBOLS).forEach(([name, symbol]) => {
+  try {
+    const instance = container.get(symbol);
+    console.log(`${name} binding test:`, {
+      exists: !!instance,
+      type: typeof instance,
+      methods: Object.getOwnPropertyNames(instance)
+    });
+  } catch (e) {
+    console.error(`${name} binding failed:`, e);
+  }
+});
+
+// Test PlacesService specifically
+try {
+  console.log('Testing PlacesService creation...');
+  const testService = container.get<PlacesService>(SYMBOLS.PlacesService);
+  console.log('PlacesService test:', {
+    exists: !!testService,
+    hasLogger: !!(testService as any).logger,
+    hasFirebaseRepo: !!(testService as any).firebaseRepo,
+    hasGoogleRepo: !!(testService as any).googlePlacesRepo
+  });
+} catch (e) {
+  console.error('PlacesService creation failed:', e);
+}
+
+export { container };

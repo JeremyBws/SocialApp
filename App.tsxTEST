@@ -1,0 +1,87 @@
+import 'reflect-metadata';
+import React, { useState, useEffect } from 'react';
+import { container } from './src/config/container';
+import { bootServices } from './src/config/bootstrap';
+import { ILogger } from './src/types/interfaces';
+import { SYMBOLS } from './src/types/symbols';
+import { NavigationContainer } from '@react-navigation/native';
+import { PaperProvider } from 'react-native-paper';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { StyleSheet, Text, View } from 'react-native';
+import { theme } from './src/theme/themes';
+import MainStackNavigator from './src/navigation/AppNavigator';
+import { FavoritesProvider } from './src/contexts/FavoritesContext';
+import { PlacesService } from './src/services/placesService';
+import { Logger } from './src/utils/logger';
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 5 * 60 * 1000,
+    },
+  },
+});
+
+// Configuration manuelle du conteneur
+const setupContainer = () => {
+  console.log('Setting up container...');
+  container.bind<ILogger>(SYMBOLS.Logger).to(Logger).inSingletonScope();
+  container.bind(SYMBOLS.PlacesService).to(PlacesService).inSingletonScope();
+};
+
+export default function App() {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const initializeApp = async () => {
+      try {
+        // Configurer le conteneur
+        setupContainer();
+
+        // Récupération explicite du logger
+        const logger = container.get<ILogger>(SYMBOLS.Logger);
+        console.log('Logger instance récupérée:', !!logger);
+
+        // Initialisation des services
+        logger.info('Starting application initialization...');
+        await bootServices();
+        logger.info('Application initialized successfully.');
+
+        setIsReady(true);
+      } catch (error) {
+        console.error("Erreur d'initialisation:", error);
+      }
+    };
+
+    initializeApp();
+  }, []);
+
+  if (!isReady) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <FavoritesProvider>
+        <PaperProvider theme={theme}>
+          <NavigationContainer>
+            <MainStackNavigator />
+          </NavigationContainer>
+        </PaperProvider>
+      </FavoritesProvider>
+    </QueryClientProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

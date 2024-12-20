@@ -1,0 +1,95 @@
+Structure du dossier
+Le num‚ro de s‚rie du volume est 1E21-85A0
+C:.
+|   app.ts
+|   env.d.ts
+|   monarbo1.txt
+|   
++---components
+|   |   AnimatedStatCard.tsx
+|   |   CachedImage.tsx
+|   |   FlippableRestaurantCard.tsx
+|   |   RestaurantCard.tsx
+|   |   RestaurantsList.tsx
+|   |   
+|   +---filters
+|   |       FilterButton.tsx
+|   |       FiltersBar.tsx
+|   |       
+|   \---profile
+|           ProfilesProgress.tsx
+|           
++---config
+|       bootstrap.ts
+|       config.ts
+|       container.ts
+|       firebase.ts
+|       
++---contexts
+|       FavoritesContext.tsx
+|       
++---controllers
+|       placesController.ts
+|       
++---hooks
+|       useDistance.ts
+|       useRestaurants.ts
+|       useUserProgress.ts
+|       
++---navigation
+|       AppNavigator.tsx
+|       
++---repositories
+|       firebaseRepository.ts
+|       googlePlacesRepository.ts
+|       
++---screens
+|       FavoritesScreen.tsx
+|       HomeScreen.tsx
+|       ProfileScreen.tsx
+|       RestaurantDetailsScreen.tsx
+|       SettingsScreen.tsx
+|       WelcomeScreen.tsx
+|       WishlistScreen.tsx
+|       
++---services
+|       authService.ts
+|       favoritesService.ts
+|       locationService.ts
+|       placesService.ts
+|       pointsService.ts
+|       settingsService.ts
+|       userProgress.ts
+|       
++---styles
+|       animatedStyles.ts
+|       baseStyles.ts
+|       filterButtonStyles.ts
+|       filterStyles.ts
+|       flippableCardStyles.ts
+|       formStyles.ts
+|       profileStyles.ts
+|       progressStyles.ts
+|       restaurantDetailsStyles.ts
+|       restaurantListStyles.ts
+|       restaurantStyles.ts
+|       searchstyles.ts
+|       settingStyles.ts
+|       
++---theme
+|       themes.ts
+|       
++---types
+|       filters.ts
+|       index.ts
+|       interfaces.ts
+|       interfaces.ts.OLD
+|       navigation.ts
+|       restaurant.ts
+|       symbols.ts
+|       user.ts
+|       
+\---utils
+        logger.ts
+        sortingUtils.ts
+        

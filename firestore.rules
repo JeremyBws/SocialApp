@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Règles pour la collection restaurants
+    match /restaurants/{restaurantId} {
+      // Lecture publique (tout le monde peut lire)
+      allow read: if true;
+      
+           allow write: if true; // Pour développement uniquement
+    }
+
+    // Règles pour les avis/notes
+    match /restaurants/{restaurantId}/reviews/{reviewId} {
+      // Lecture publique
+      allow read: if true;
+      
+      // Écriture uniquement par des utilisateurs authentifiés
+      allow create: if true; // Pour développement uniquement
+      
+      // Modification/suppression uniquement par l'auteur de l'avis
+      allow update, delete:if true; // Pour développement uniquement
+    }
+
+    // Règles pour les photos
+    match /restaurants/{restaurantId}/photos/{photoId} {
+      allow read: if true;
+      allow create: if true; // Pour développement uniquement
+      allow update, delete: if true; // Pour développement uniquement
+    }
+
+    // Règles pour les utilisateurs
+    match /users/{userId} {
+      // Chaque utilisateur peut lire/écrire ses propres données
+      allow read, write: if request.auth != null 
+                        && request.auth.uid == userId;
+    }
+  }
+}
