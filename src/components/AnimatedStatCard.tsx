@@ -25,6 +25,7 @@ export const AnimatedStatCard: React.FC<AnimatedStatCardProps> = ({
   const scaleAnim = new Animated.Value(1);
   const opacityAnim = new Animated.Value(0);
   const logger = useInjection<ILogger>(SYMBOLS.Logger);
+
   useEffect(() => {
     Animated.timing(opacityAnim, {
       toValue: 1,
@@ -43,7 +44,7 @@ export const AnimatedStatCard: React.FC<AnimatedStatCardProps> = ({
     } catch (error) {
       // Gérer silencieusement si les haptics ne sont pas disponibles
       logger.info('Haptics not available:', error);
-        }
+    }
   };
 
   const handlePressOut = () => {
@@ -59,6 +60,8 @@ export const AnimatedStatCard: React.FC<AnimatedStatCardProps> = ({
         await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         onPress();
       } catch (error) {
+        // Afficher l'erreur dans les logs, ou la gérer comme tu veux
+        logger.error('Error during press:', error);
         // Continuer même si les haptics échouent
         onPress();
       }
@@ -71,6 +74,8 @@ export const AnimatedStatCard: React.FC<AnimatedStatCardProps> = ({
         await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         onLongPress();
       } catch (error) {
+        // Afficher l'erreur dans les logs, ou la gérer comme tu veux
+        logger.error('Error during long press:', error);
         // Continuer même si les haptics échouent
         onLongPress();
       }

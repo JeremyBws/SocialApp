@@ -1,13 +1,11 @@
 import React from 'react';
 import {
   View,
-  FlatList,
-  NativeSyntheticEvent,
+   NativeSyntheticEvent,
   NativeScrollEvent,
   Animated,
   TouchableOpacity,
   Text,
-  StyleSheet,
 } from 'react-native';
 import { FlippableRestaurantCard } from './FlippableRestaurantCard';
 import { Restaurant } from '../types/restaurant';
@@ -15,11 +13,7 @@ import { searchStyles } from '../styles/searchstyles';
 import {restaurantListStyles} from '../styles/restaurantListStyles' 
 import { useFavorites } from '../contexts/FavoritesContext';
 import { RefreshControlProps } from 'react-native';
-import { PlacesService } from '../services/placesService';
 
-import { useInjection } from 'inversify-react';
-import { SYMBOLS } from '../types/symbols';
-import { ILogger, IPlacesService } from '../types/interfaces';
 interface RestaurantsListProps {
   restaurants: Restaurant[];
   onRestaurantPress: (id: string) => void;
@@ -48,8 +42,7 @@ export const RestaurantsList = ({
     isRestaurantFavorite,
     isRestaurantWishlisted,
   } = useFavorites();
-  const placesService = useInjection<IPlacesService>(SYMBOLS.PlacesService);
-  const logger = useInjection<ILogger>(SYMBOLS.Logger);
+
   const renderFooter = () => {
     if (restaurants.length < 25 && onExtendSearch && !isLoading) {
       return (

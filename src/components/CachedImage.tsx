@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Image, ImageStyle, View, ActivityIndicator, StyleSheet, ImageSourcePropType } from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import { BlurView } from 'expo-blur';
 import { MD5 } from 'crypto-js';
 import { useInjection } from 'inversify-react';
 import { SYMBOLS } from '../types/symbols';

@@ -121,7 +121,7 @@ export const RestaurantCard = ({
             style={restaurantStyles.detailsButton}
             onPress={() => onPress(restaurant.id)}
           >
-            <Text style={restaurantStyles.detailsButtonText}>Plus d'infos</Text>
+            <Text style={restaurantStyles.detailsButtonText}>Plus d&apos;infos</Text>
           </TouchableOpacity>
         </View>
       </View>

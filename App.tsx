@@ -24,7 +24,7 @@ const queryClient = new QueryClient({
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
-  const [containerInstance, setContainerInstance] = useState(container);
+  const [containerInstance] = useState(container);
 
   useEffect(() => {
     const initializeApp = async () => {

@@ -1,17 +1,11 @@
-
-import { container } from '../config/container';
 import React, { useEffect, useRef } from 'react';
-import { View, Animated, PanResponder, StyleSheet } from 'react-native';
+import { View, Animated, PanResponder } from 'react-native';
 import { Restaurant, RestaurantWithDistance } from '../types/restaurant';
 import { RestaurantCard } from './RestaurantCard';
 import { RestaurantDetailsScreen } from '../screens/RestaurantDetailsScreen';
 import { useDistance } from '../hooks/useDistance';
 import { flippableCardStyles } from '../styles/flippableCardStyles';
 
-import { useInjection } from 'inversify-react';
-import { SYMBOLS } from '../types/symbols';
-import { ILogger, ILocationService } from '../types/interfaces';
-import { LocationService } from '../services/locationService';
 
 interface FlippableRestaurantCardProps {
   restaurant: Restaurant;
@@ -34,12 +28,10 @@ export const FlippableRestaurantCard: React.FC<FlippableRestaurantCardProps> = (
   onBack,
   isFlipped,
 }) => {
-  const logger = useInjection<ILogger>(SYMBOLS.Logger);
   const { calculateDistance } = useDistance();
   const flipAnim = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(0)).current;
   const translateX = useRef(new Animated.Value(0)).current;
-  const locationService = container.get<ILocationService>(SYMBOLS.LocationService);
   useEffect(() => {
     Animated.timing(flipAnim, {
       toValue: isFlipped ? 180 : 0,
