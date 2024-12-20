@@ -6,7 +6,7 @@
     "strictNullChecks": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "target": "ES6",
+    "target": "ES2020",
     "module": "esnext",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -16,12 +16,16 @@
     "paths": {
       "@/*": ["src/*"],
       "@assets/*": ["assets/*"]
-    }
+    },
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "src/**/*"
+    "src/**/*",
+    "app.json",
+    "app.config.ts"
   ],
   "exclude": [
     "node_modules"
