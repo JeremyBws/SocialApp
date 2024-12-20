@@ -25,7 +25,8 @@
     "**/*.tsx",
     "src/**/*",
     "app.json",
-    "app.config.ts"
+    "app.config.ts",
+    "declarations.d.ts" // Ajoutez cette ligne si vous avez créé le fichier declarations.d.ts
   ],
   "exclude": [
     "node_modules"

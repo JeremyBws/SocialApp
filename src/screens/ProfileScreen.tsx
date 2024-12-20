@@ -10,8 +10,9 @@ import { useUserProgress } from '../hooks/useUserProgress';
 import { SYMBOLS } from '../types/symbols';
 import { ILogger, IPointsService } from '../types/interfaces';
 import { useInjection } from 'inversify-react';
+import { Logger } from '@/utils/logger';
 import { PointsService } from '../services/pointsService';
-
+import defaultAvatar from '../../assets/default_avatar.png';
 type ProfileScreenProps = DrawerScreenProps<'Profil'>;
 
 interface StatItemProps {
@@ -120,8 +121,8 @@ const PreferenceItem: React.FC<PreferenceItemProps> = ({ title, onPress }) => (
         <View style={profileStyles.profileHeader}>
         <Avatar.Image
  size={80}
- source={require('../../assets/default_avatar.png')}
- style={profileStyles.avatar}
+ source={defaultAvatar}
+  style={profileStyles.avatar}
 />
           <Text style={profileStyles.userName}>Utilisateur</Text>
           <View style={profileStyles.onlineStatus} />

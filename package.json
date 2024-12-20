@@ -7,8 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-  "type-check": "tsc --noEmit"
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@expo/metro-runtime": "~4.0.0",
@@ -38,6 +38,7 @@
     "firebase": "^11.0.2",
     "inversify": "^6.2.0",
     "inversify-react": "^1.1.1",
+    "metro-config": "^0.81.0",
     "react": "^18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.76.3",

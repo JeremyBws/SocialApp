@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { Text, IconButton } from 'react-native-paper';
 import { theme } from '../theme/themes';
 import { Restaurant } from '../types/restaurant';
 import { MOCK_FOOD_PHOTOS } from '../types/restaurant';
 import { restaurantDetailsStyles } from '../styles/restaurantDetailsStyles';
-import { CachedImage } from '../components/CachedImage';
+import { CachedImage } from '../components/CachedImage';  // Assurez-vous que CachedImage est correctement configuré
 
-const placeholder = require('../../assets/placeholder-restaurant.jpg');
+import placeholder from '../../assets/placeholder-restaurant.jpg';  // Importation du placeholder
 
 interface RestaurantDetailsScreenProps {
   restaurant: Restaurant;
@@ -78,19 +78,21 @@ export const RestaurantDetailsScreen = ({
           <View style={restaurantDetailsStyles.row}>
             {firstRow.map((photo) => (
               <CachedImage
-  uri={photo.url}
-  style={restaurantDetailsStyles.photo}
-  placeholder={placeholder}
-/>
+                key={photo.url}  // Ajout de la clé pour chaque élément
+                uri={photo.url}
+                style={restaurantDetailsStyles.photo}
+                placeholder={placeholder}  // Passage du placeholder
+              />
             ))}
           </View>
           <View style={restaurantDetailsStyles.row}>
             {secondRow.map((photo) => (
               <CachedImage
-  uri={photo.url}
-  style={restaurantDetailsStyles.photo}
-  placeholder={placeholder}
-/>
+                key={photo.url}  // Ajout de la clé pour chaque élément
+                uri={photo.url}
+                style={restaurantDetailsStyles.photo}
+                placeholder={placeholder}  // Passage du placeholder
+              />
             ))}
           </View>
         </View>

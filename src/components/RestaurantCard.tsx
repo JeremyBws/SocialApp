@@ -11,7 +11,7 @@ import { useInjection } from 'inversify-react';
 import { SYMBOLS } from '../types/symbols';
 import { ILogger } from '../types/interfaces';
 
-const placeholder = require('../../assets/placeholder-restaurant.jpg');
+import placeholder from '../../assets/placeholder-restaurant.jpg';
 
 interface RestaurantCardProps {
   restaurant: RestaurantWithDistance;

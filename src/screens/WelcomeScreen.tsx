@@ -9,6 +9,9 @@ import { SYMBOLS } from '../types/symbols';
 import { ILogger, IFavoritesService, IAuthService } from '../types/interfaces';
 import { useInjection } from 'inversify-react';
 import { AuthService } from '../services/authService';
+import defaultBackground from '../../assets/background.jpg';
+
+
 export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
   const logger = useInjection<ILogger>(SYMBOLS.Logger);
 const authService = useInjection<IAuthService>(SYMBOLS.AuthService);
@@ -104,7 +107,7 @@ const authService = useInjection<IAuthService>(SYMBOLS.AuthService);
 
   return (
     <ImageBackground
-    source={require('../../assets/background.jpg')}
+   source={defaultBackground}
     style={baseStyles.containerBase}
     resizeMode="cover"
    >

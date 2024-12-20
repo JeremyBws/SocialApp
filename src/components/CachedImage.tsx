@@ -9,7 +9,7 @@ import { ILogger } from '../types/interfaces';
 interface CachedImageProps {
   uri: string;
   style: ImageStyle;
-  placeholder: ImageSourcePropType;  // Changé le type pour accepter un require()
+  placeholder: ImageSourcePropType;  
 }
 
 export const CachedImage: React.FC<CachedImageProps> = ({ uri, style, placeholder }) => {
