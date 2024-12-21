@@ -11,37 +11,36 @@ import { FavoritesService } from '../services/favoritesService';
 import { PointsService } from '../services/pointsService';
 import { SettingsService } from '../services/settingsService';
 import { db } from '../config/firebase';
-
 const container = new Container();
 
-console.log('Creating container and binding services...');
-
-// Création des instances
+// Base services
 const logger = new Logger();
 const config = new Config();
 
-// Bind base services
+// Base services
 container.bind(SYMBOLS.Logger).toConstantValue(logger);
 container.bind(SYMBOLS.Config).toConstantValue(config);
 container.bind(SYMBOLS.Firestore).toConstantValue(db);
 
-// Create and bind repositories
+// Create repositories
 const firebaseRepo = new FirebaseRepository(logger, db);
 const googlePlacesRepo = new GooglePlacesRepository(logger, config);
 
+// Binding repositories
 container.bind(SYMBOLS.FirebaseRepository).toConstantValue(firebaseRepo);
-container.bind(SYMBOLS.GooglePlacesRepository).toConstantValue(googlePlacesRepo);
+container.bind(SYMBOLS.GooglePlacesRepository).toConstantValue(googlePlacesRepo); // Correction ici
 
-// Create and bind services
-const placesService = new PlacesService(logger, firebaseRepo, googlePlacesRepo);
+// Create services with the correct dependencies
 const authService = new AuthService(logger, firebaseRepo);
+const placesService = new PlacesService(logger, firebaseRepo, googlePlacesRepo);
 const locationService = new LocationService(logger);
 const favoritesService = new FavoritesService(logger, firebaseRepo);
 const pointsService = new PointsService(logger, firebaseRepo);
 const settingsService = new SettingsService(logger);
 
-container.bind(SYMBOLS.PlacesService).toConstantValue(placesService);
+// Bind services
 container.bind(SYMBOLS.AuthService).toConstantValue(authService);
+container.bind(SYMBOLS.PlacesService).toConstantValue(placesService);
 container.bind(SYMBOLS.LocationService).toConstantValue(locationService);
 container.bind(SYMBOLS.FavoritesService).toConstantValue(favoritesService);
 container.bind(SYMBOLS.PointsService).toConstantValue(pointsService);

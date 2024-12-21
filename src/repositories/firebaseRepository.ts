@@ -1,5 +1,4 @@
 import 'firebase/auth';
-
 import {
   doc,
   writeBatch,
@@ -9,25 +8,22 @@ import {
   updateDoc
 } from 'firebase/firestore';
 import { Restaurant } from '../types/restaurant';
-import { ILogger, IAuthService, IFirebaseRepository } from '../types/interfaces';
-
+import { ILogger, IFirebaseRepository, UserPreferences, UserProgress } from '../types/interfaces';
 
 export class FirebaseRepository implements IFirebaseRepository {
   private readonly usersCollection = 'users';
   private readonly restaurantsCollection = 'restaurants';
   private logger: ILogger;
   private db: Firestore;
-  private authService: IAuthService;
 
   constructor(
     logger: ILogger,
-    db: Firestore,
-    authService: IAuthService
+    db: Firestore
   ) {
     this.logger = logger;
     this.db = db;
-    this.authService = authService;
   }
+
   async getRestaurant(id: string): Promise<Restaurant | null> {
     try {
       const docRef = doc(this.db, this.restaurantsCollection, id);
@@ -41,6 +37,7 @@ export class FirebaseRepository implements IFirebaseRepository {
       return null;
     }
   }
+
   async updateUserPoints(userId: string, points: number): Promise<void> {
     try {
       const userRef = doc(this.db, this.usersCollection, userId);
@@ -54,6 +51,7 @@ export class FirebaseRepository implements IFirebaseRepository {
       throw error;
     }
   }
+
   async updateUserProgress(userId: string, progress: UserProgress): Promise<void> {
     try {
       const userRef = doc(this.db, this.usersCollection, userId);
@@ -67,13 +65,12 @@ export class FirebaseRepository implements IFirebaseRepository {
       throw error;
     }
   }
+
   async updateUserPreferences(userId: string, preferences: UserPreferences): Promise<void> {
     try {
       const userRef = doc(this.db, this.usersCollection, userId);
       const userDoc = await getDoc(userRef);
-
       if (!userDoc.exists()) {
-        // Créer le document utilisateur s'il n'existe pas
         await setDoc(userRef, {
           ...preferences,
           createdAt: new Date(),
@@ -81,7 +78,6 @@ export class FirebaseRepository implements IFirebaseRepository {
         });
         this.logger.info('Created new user preferences:', { userId });
       } else {
-        // Mettre à jour les préférences existantes
         await updateDoc(userRef, {
           ...preferences,
           updatedAt: new Date()
@@ -94,21 +90,17 @@ export class FirebaseRepository implements IFirebaseRepository {
     }
   }
 
-   async getUserPreferences(): Promise<any | null> {
+  async getUserPreferences(userId: string): Promise<any | null> {
     try {
-      const userId = this.authService.getCurrentUserId(); // Utilisation de IAuthService
       if (!userId) {
-        this.logger.info('No user is currently logged in');
+        this.logger.info('No user ID provided');
         return null;
       }
-
       const userRef = doc(this.db, this.usersCollection, userId);
       const userDoc = await getDoc(userRef);
-
       if (!userDoc.exists()) {
         return null;
       }
-
       return userDoc.data();
     } catch (error) {
       this.logger.error('Error getting user preferences:', error);

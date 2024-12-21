@@ -18,12 +18,12 @@ export interface IConfig {
 export interface IFirebaseRepository {
   getRestaurant(id: string): Promise<Restaurant | null>;
   updateUserPoints(userId: string, points: number): Promise<void>;
-  updateUserProgress(userId: string, progress: { points: number; level: number }): Promise<void>;
-  updateUserPreferences(userId: string, preferences: { favorites: string[]; wishlist: string[] }): Promise<void>;
-  getUserPreferences(): Promise<any | null>;
-  createBatch(): WriteBatch;
-  addToBatch(batch: WriteBatch, id: string, data: any): Promise<void>;
-  commitBatch(batch: WriteBatch): Promise<void>;
+  updateUserProgress(userId: string, progress: UserProgress): Promise<void>;
+  updateUserPreferences(userId: string, preferences: UserPreferences): Promise<void>;
+  getUserPreferences(userId: string): Promise<any | null>;  // Modifié ici pour accepter userId
+  createBatch(): any;
+  addToBatch(batch: any, id: string, data: any): Promise<void>;
+  commitBatch(batch: any): Promise<void>;
 }
 
 export interface IGooglePlacesRepository {
